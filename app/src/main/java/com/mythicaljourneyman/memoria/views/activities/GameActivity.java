@@ -99,6 +99,11 @@ public class GameActivity extends AppCompatActivity {
         // set default grid size to 4.
         mGridSize = getIntent().getIntExtra(GRID_SIZE, 4);
 
+        if (mGridSize % 2 != 0) {
+            finish();
+            return;
+        }
+
         // set default player name to Guest
         if (TextUtils.isEmpty(playerName)) {
             playerName = "Guest";
@@ -265,9 +270,9 @@ public class GameActivity extends AppCompatActivity {
             if (item.open) {
 //                holder.mBinding.front.setVisibility(View.GONE);
 //                holder.mBinding.back.setVisibility(View.VISIBLE);
-                holder.mBinding.front.animate().alpha(0).rotationYBy(180).setInterpolator(new LinearInterpolator()).setDuration(mTileAnimationTimeInMilliSeconds).start();
-                holder.mBinding.back.animate().alpha(1).rotationYBy(-180).setInterpolator(new LinearInterpolator()).setDuration(mTileAnimationTimeInMilliSeconds).start();
-                holder.mBinding.container.animate().translationZ(0).start();
+                holder.mBinding.front.animate().rotationYBy(180).alpha(0).setInterpolator(new LinearInterpolator()).setDuration(mTileAnimationTimeInMilliSeconds).start();
+                holder.mBinding.back.animate().alpha(1).rotationYBy(-180).setInterpolator(new LinearInterpolator()).setDuration(mTileAnimationTimeInMilliSeconds / 2).setStartDelay(mTileAnimationTimeInMilliSeconds / 2).start();
+                holder.mBinding.container.animate().translationZBy(-12).start();
                 item.open = false;
             }
 
@@ -279,9 +284,9 @@ public class GameActivity extends AppCompatActivity {
                 // play click sound
                 playClick();
 
-                holder.mBinding.front.animate().alpha(1).rotationYBy(180).setInterpolator(new LinearInterpolator()).setDuration(mTileAnimationTimeInMilliSeconds).start();
+                holder.mBinding.front.animate().alpha(1).rotationYBy(180).setInterpolator(new LinearInterpolator()).setDuration(mTileAnimationTimeInMilliSeconds / 2).setStartDelay(mTileAnimationTimeInMilliSeconds / 2).start();
                 holder.mBinding.back.animate().alpha(0).rotationYBy(-180).setInterpolator(new LinearInterpolator()).setDuration(mTileAnimationTimeInMilliSeconds).start();
-                holder.mBinding.container.animate().translationZ(12).start();
+                holder.mBinding.container.animate().translationZBy(12).start();
                 item.open = true;
             }
         }

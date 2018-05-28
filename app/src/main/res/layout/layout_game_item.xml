@@ -7,13 +7,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="4dp"
+        android:background="@drawable/game_item_background"
         android:orientation="horizontal">
 
         <FrameLayout
             android:id="@+id/front"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/tileFrontColor">
+            android:background="@drawable/game_item_front_background">
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/item"
@@ -32,7 +33,7 @@
             android:id="@+id/back"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/tileBackColor">
+            android:background="@drawable/game_item_back_background">
 
         </FrameLayout>
     </com.mythicaljourneyman.memoria.views.widgets.SquareFrameLayout>
