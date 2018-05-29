@@ -10,7 +10,8 @@
         android:theme="@style/AppThemeNoActionBar">
         <activity
             android:name=".views.activities.SplashActivity"
-            android:configChanges="orientation|screenLayout|screenSize"
+            android:configChanges="fontScale|layoutDirection|orientation|screenLayout|screenSize"
+            android:screenOrientation="sensorPortrait"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -20,11 +21,18 @@
         </activity>
         <activity
             android:name=".views.activities.HomeActivity"
-            android:configChanges="orientation|screenLayout|screenSize">
+            android:configChanges="fontScale|layoutDirection|orientation|screenLayout|screenSize"
+            android:screenOrientation="sensorPortrait">
         </activity>
         <activity
             android:name=".views.activities.GameActivity"
-            android:configChanges="orientation|screenLayout|screenSize">
+            android:configChanges="fontScale|layoutDirection|orientation|screenLayout|screenSize"
+            android:screenOrientation="sensorPortrait">
+        </activity>
+        <activity
+            android:name=".views.activities.EditNamesActivity"
+            android:configChanges="screenLayout|fontScale|layoutDirection|orientation|screenSize"
+            android:screenOrientation="sensorPortrait">
         </activity>
     </application>
 </manifest>

@@ -1,13 +1,15 @@
 package com.mythicaljourneyman.memoria.views.activities;
 
+import android.animation.Animator;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -74,11 +76,26 @@ public class GameActivity extends AppCompatActivity {
         return intent;
     }
 
+    public static Intent getStartIntent4(Context context, String playerName) {
+        Intent intent = new Intent(context, GameActivity.class);
+        intent.putExtra(PLAYER_NAME, playerName);
+        intent.putExtra(GRID_SIZE, 4);
+        return intent;
+    }
+
+    public static Intent getStartIntent6(Context context, String playerName) {
+        Intent intent = new Intent(context, GameActivity.class);
+        intent.putExtra(PLAYER_NAME, playerName);
+        intent.putExtra(GRID_SIZE, 6);
+        return intent;
+    }
+
     private ActivityGameBinding mBinding;
     private LeaderboardItem mItem = new LeaderboardItem();
     private int mScore = 0;
     private int mPairsIdentified = 0;
     private int mPairs = 0;
+    private MediaPlayer mMediaPlayer;
 
 
     @Override
@@ -88,9 +105,19 @@ public class GameActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mMediaPlayer != null)
+            mMediaPlayer.release();
+        mMediaPlayer = null;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_game);
+
+        mMediaPlayer = MediaPlayer.create(this, R.raw.click);
 
         // get player name from intent
         String playerName = getIntent().getStringExtra(PLAYER_NAME);
@@ -149,8 +176,7 @@ public class GameActivity extends AppCompatActivity {
         // initialize layout manager and recycler view
         mBinding.list.setLayoutManager(new GridLayoutManager(this, mGridSize, GridLayoutManager.VERTICAL, false));
         mBinding.list.setHasFixedSize(true);
-        mBinding.list.setAdapter(new ItemAdapter(list));
-        mBinding.list.setItemAnimator(new DefaultItemAnimator());
+        mBinding.list.setAdapter(new ItemAdapter(list, ContextCompat.getDrawable(this, R.drawable.game_item_front_correct_background)));
 
     }
 
@@ -185,8 +211,10 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void playClick() {
-        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.click);
-        mediaPlayer.start();
+        if (mMediaPlayer != null) {
+            mMediaPlayer.stop();
+            mMediaPlayer.start();
+        }
     }
 
     class Item {
@@ -204,8 +232,9 @@ public class GameActivity extends AppCompatActivity {
         int mPositionItem1 = -1;
         int mPositionItem2 = -1;
 
-        ItemAdapter(ArrayList<Item> list) {
+        ItemAdapter(ArrayList<Item> list, Drawable colorCorrectPairingBackground) {
             mList = list;
+            mColorCorrectPairingBackground = colorCorrectPairingBackground;
         }
 
 
@@ -216,7 +245,7 @@ public class GameActivity extends AppCompatActivity {
             return new ItemHolder(binding);
         }
 
-        private int mColorCorrectPairingBackground = 0xFF4CAF50;
+        private Drawable mColorCorrectPairingBackground;
         private int mColorCorrectPairingText = 0xffffffff;
         private int mTileAnimationTimeInMilliSeconds = 250;
 
@@ -250,10 +279,32 @@ public class GameActivity extends AppCompatActivity {
             } else {
 
                 // update grid item UI if it has been paired
-                holder.mBinding.front.setBackgroundColor(mColorCorrectPairingBackground);
+                holder.mBinding.front.setBackground(mColorCorrectPairingBackground);
                 holder.mBinding.front.setVisibility(View.VISIBLE);
                 holder.mBinding.back.setVisibility(View.GONE);
-                holder.mBinding.item.setTextColor(mColorCorrectPairingText);
+
+                holder.mBinding.container.setCardElevation(12);
+                holder.mBinding.front.animate().alpha(0.f).setInterpolator(new LinearInterpolator()).setDuration(500).setStartDelay(2000).setListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+                        holder.mBinding.container.setCardElevation(0);
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                }).start();
 
 
                 // remove click listener if grid item has been paired
@@ -272,8 +323,8 @@ public class GameActivity extends AppCompatActivity {
 //                holder.mBinding.back.setVisibility(View.VISIBLE);
                 holder.mBinding.front.animate().rotationYBy(180).alpha(0).setInterpolator(new LinearInterpolator()).setDuration(mTileAnimationTimeInMilliSeconds).start();
                 holder.mBinding.back.animate().alpha(1).rotationYBy(-180).setInterpolator(new LinearInterpolator()).setDuration(mTileAnimationTimeInMilliSeconds / 2).setStartDelay(mTileAnimationTimeInMilliSeconds / 2).start();
-                holder.mBinding.container.animate().translationZBy(-12).start();
                 item.open = false;
+                holder.mBinding.container.setCardElevation(0);
             }
 
             // open a grid item
@@ -286,7 +337,7 @@ public class GameActivity extends AppCompatActivity {
 
                 holder.mBinding.front.animate().alpha(1).rotationYBy(180).setInterpolator(new LinearInterpolator()).setDuration(mTileAnimationTimeInMilliSeconds / 2).setStartDelay(mTileAnimationTimeInMilliSeconds / 2).start();
                 holder.mBinding.back.animate().alpha(0).rotationYBy(-180).setInterpolator(new LinearInterpolator()).setDuration(mTileAnimationTimeInMilliSeconds).start();
-                holder.mBinding.container.animate().translationZBy(12).start();
+                holder.mBinding.container.setCardElevation(4);
                 item.open = true;
             }
         }
@@ -352,7 +403,7 @@ public class GameActivity extends AppCompatActivity {
 
 
                 Completable.complete()
-                        .delay(1, TimeUnit.SECONDS)
+                        .delay(1000, TimeUnit.MILLISECONDS)
                         .subscribe(new Action() {
                             @Override
                             public void run() throws Exception {

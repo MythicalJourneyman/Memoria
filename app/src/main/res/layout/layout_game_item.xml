@@ -1,40 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
-    <com.mythicaljourneyman.memoria.views.widgets.SquareFrameLayout
+    <android.support.v7.widget.CardView
         xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="4dp"
-        android:background="@drawable/game_item_background"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="#0000"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="0dp"
+        app:cardUseCompatPadding="true">
 
-        <FrameLayout
-            android:id="@+id/front"
+        <com.mythicaljourneyman.memoria.views.widgets.SquareFrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/game_item_front_background">
+            android:background="@drawable/game_item_background"
+            android:orientation="horizontal">
 
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/item"
+            <FrameLayout
+                android:id="@+id/front"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_margin="4dp"
-                android:gravity="center"
-                android:textColor="#000"
-                android:textSize="32sp"
-                android:textStyle="bold"/>
+                android:background="@drawable/game_item_front_background">
 
-        </FrameLayout>
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/item"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textColor="#fff"
+                    android:textSize="32dp"
+                    android:textStyle="bold"/>
 
-        <FrameLayout
-            android:id="@+id/back"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/game_item_back_background">
+            </FrameLayout>
 
-        </FrameLayout>
-    </com.mythicaljourneyman.memoria.views.widgets.SquareFrameLayout>
+            <FrameLayout
+                android:id="@+id/back"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/game_item_back_background">
+
+                <com.mythicaljourneyman.memoria.views.widgets.IconTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/item_back_background"
+                    android:textColor="@color/colorO"
+                    android:textSize="32dp"/>
+            </FrameLayout>
+        </com.mythicaljourneyman.memoria.views.widgets.SquareFrameLayout>
+    </android.support.v7.widget.CardView>
 </layout>

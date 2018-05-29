@@ -5,35 +5,35 @@
         <shape
             android:shape="rectangle">
             <corners android:radius="4dp"/>
-            <solid android:color="#aaeaa1"/>
+            <solid android:color="#fffae0"/>
         </shape>
     </item>
-    <item>
-        <shape
-            android:innerRadiusRatio="5"
-            android:shape="ring"
-            android:thicknessRatio="50"
-            android:useLevel="false">
-            <solid android:color="#f00"/>
-        </shape>
-    </item>
-    <item>
-        <shape
-            android:innerRadiusRatio="6"
-            android:shape="ring"
-            android:thicknessRatio="55"
-            android:useLevel="false">
-            <solid android:color="#00f"/>
-        </shape>
-    </item>
-    <item>
-        <shape
-            android:innerRadiusRatio="8"
-            android:shape="ring"
-            android:thicknessRatio="50"
-            android:useLevel="false">
-            <solid android:color="#ff0"/>
-        </shape>
-    </item>
+    <!--<item>-->
+        <!--<shape-->
+            <!--android:innerRadiusRatio="5"-->
+            <!--android:shape="ring"-->
+            <!--android:thicknessRatio="50"-->
+            <!--android:useLevel="false">-->
+            <!--<solid android:color="#f00"/>-->
+        <!--</shape>-->
+    <!--</item>-->
+    <!--<item>-->
+        <!--<shape-->
+            <!--android:innerRadiusRatio="6"-->
+            <!--android:shape="ring"-->
+            <!--android:thicknessRatio="55"-->
+            <!--android:useLevel="false">-->
+            <!--<solid android:color="#00f"/>-->
+        <!--</shape>-->
+    <!--</item>-->
+    <!--<item>-->
+        <!--<shape-->
+            <!--android:innerRadiusRatio="8"-->
+            <!--android:shape="ring"-->
+            <!--android:thicknessRatio="50"-->
+            <!--android:useLevel="false">-->
+            <!--<solid android:color="#ff0"/>-->
+        <!--</shape>-->
+    <!--</item>-->
 
 </layer-list>

@@ -3,8 +3,10 @@ package com.mythicaljourneyman.memoria.views.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +19,7 @@ import com.mythicaljourneyman.memoria.databinding.ActivityHomeBinding;
 import com.mythicaljourneyman.memoria.databinding.LayoutLeaderboardItemBinding;
 import com.mythicaljourneyman.memoria.db.AppDatabase;
 import com.mythicaljourneyman.memoria.db.objects.LeaderboardItem;
+import com.mythicaljourneyman.memoria.preferences.AppPreferences;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +45,7 @@ public class HomeActivity extends AppCompatActivity {
     private int mSkip = 0, mLimit = 20;
     private ItemAdapter mAdapter;
     private RecyclerView.OnScrollListener mOnScrollListener;
+    private int mGridSize = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,16 +56,48 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void initializeViews() {
+        mGridSize = AppPreferences.getGridSize(this);
+        final int color = ContextCompat.getColor(this, R.color.colorX);
+        final int colorPlain = Color.WHITE;
+
+        setColorForGrid(mGridSize, color, colorPlain);
+
+        mBinding.fourGrid.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AppPreferences.setGridSize(HomeActivity.this, 4);
+                mGridSize = 4;
+                setColorForGrid(4, color, colorPlain);
+            }
+        });
+
+        mBinding.sixGrid.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mGridSize = 6;
+                AppPreferences.setGridSize(HomeActivity.this, 6);
+                setColorForGrid(6, color, colorPlain);
+            }
+        });
 
         // start game
         mBinding.start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(GameActivity.getStartIntent(HomeActivity.this, ""));
+                if (mGridSize == 4) {
+                    startActivity(GameActivity.getStartIntent4(HomeActivity.this, AppPreferences.getPlayer1Name(HomeActivity.this)));
+                } else {
+                    startActivity(GameActivity.getStartIntent6(HomeActivity.this, AppPreferences.getPlayer1Name(HomeActivity.this)));
+                }
             }
         });
 
-
+        mBinding.chooseNames.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(EditNamesActivity.getStartIntent(HomeActivity.this));
+            }
+        });
         // initialize layout manager and recycler view for leaderboard
         final LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
 
@@ -82,6 +118,16 @@ public class HomeActivity extends AppCompatActivity {
 
         mAdapter = new ItemAdapter(new ArrayList<LeaderboardItem>());
         mBinding.list.setAdapter(mAdapter);
+    }
+
+    private void setColorForGrid(int gridSize, int color, int colorPlain) {
+        if (gridSize == 4) {
+            mBinding.fourGrid.setTextColor(color);
+            mBinding.sixGrid.setTextColor(colorPlain);
+        } else if (gridSize == 6) {
+            mBinding.sixGrid.setTextColor(color);
+            mBinding.fourGrid.setTextColor(colorPlain);
+        }
     }
 
     /**
@@ -122,8 +168,8 @@ public class HomeActivity extends AppCompatActivity {
 
                         if (mSkip == 0) {
                             mBinding.list.clearOnScrollListeners();
-                            mBinding.list.setVisibility(View.GONE);
-                            mBinding.labels.setVisibility(View.GONE);
+                            mBinding.list.setVisibility(View.INVISIBLE);
+                            mBinding.labels.setVisibility(View.INVISIBLE);
                         }
 
                         // if number of items fetched in this batch is

@@ -6,4 +6,40 @@
     <string name="scorelabel">Score :</string>
     <string name="score">Score</string>
     <string name="name">Player</string>
+    <string name="player">Player</string>
+
+    <string name="choose_names">Update Name</string>
+    <string name="choose_board_size">Choose Board Size</string>
+
+    <string name="item_back_background">&#xf1a3;</string>
+
+    <string-array name="icons">
+        <item>X</item>
+        <item>O</item>
+        <item>&#xf109;</item>
+        <item>&#xf129;</item>
+        <item>&#xf12b;</item>
+        <item>&#xf12d;</item>
+        <item>&#xf13d;</item>
+        <item>&#xf140;</item>
+        <item>&#xf144;</item>
+        <item>&#xf145;</item>
+        <item>&#xf14d;</item>
+        <item>&#xf153;</item>
+        <item>&#xf158;</item>
+        <item>&#xf15a;</item>
+        <item>&#xf188;</item>
+        <item>&#xf1b9;</item>
+        <item>&#xf1dd;</item>
+        <item>&#xf1de;</item>
+        <item>&#xf1f5;</item>
+        <item>&#xf266;</item>
+        <item>&#xf277;</item>
+        <item>&#xf27b;</item>
+        <item>&#xf295;</item>
+        <item>&#xf297;</item>
+        <item>&#xf310;</item>
+        <item>&#xf108;</item>
+
+    </string-array>
 </resources>
