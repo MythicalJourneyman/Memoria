@@ -212,7 +212,6 @@ public class GameActivity extends AppCompatActivity {
 
     private void playClick() {
         if (mMediaPlayer != null) {
-            mMediaPlayer.stop();
             mMediaPlayer.start();
         }
     }
